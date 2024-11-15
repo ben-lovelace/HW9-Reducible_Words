@@ -102,7 +102,22 @@ def find_word(s, hash_table):
     pre: s is a string, and hash_table is a list representing the hash table.
     post: Returns True if s is found in hash_table, otherwise returns False.
     """
-    return hash_word("zebra", 5)
+    
+    table_size = len(hash_table)
+    start_slot = hash_word(s, table_size)
+
+    position = start_slot
+    cur_i = 1
+
+    while hash_table[position] is not None:
+        if hash_table[position] == s:
+            return True
+        else:
+            position = (start_slot + cur_i ** 2) % table_size
+            cur_i += 1
+        if position == start_slot:
+            break
+    return False
 
 
 def is_reducible(s, hash_table, hash_memo):
