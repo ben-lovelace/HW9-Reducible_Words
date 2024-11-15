@@ -15,6 +15,8 @@ UT EID 1: BRL979
 UT EID 2: ANA3636
 """
 
+import sys
+
 # the constant used to calculate the step size
 STEP_SIZE_CONSTANT = 3
 
@@ -56,8 +58,13 @@ def hash_word(s, size):
 
 
 def step_size(s):
+    """
+    Calculates step size for double hashing using STEP_SIZE_CONSTANT.
 
-    return STEP_SIZE_CONSTANT - (hash_word(s, 3) % STEP_SIZE_CONSTANT)
+    pre: s is a lowercase string.
+    post: Returns the calculated step size as an integer based on the provided string.
+    """
+    return STEP_SIZE_CONSTANT - (hash_word(s, STEP_SIZE_CONSTANT) % STEP_SIZE_CONSTANT)
 
 
 # TODO: Modify this function. You may delete this comment when you are done.
@@ -70,6 +77,22 @@ def insert_word(s, hash_table):
     post: Inserts s into hash_table at the correct index; resolves any collisions
           by double hashing.
     """
+    word_hash = hash_word(s, len(hash_table) - 1)
+
+    if hash_table[word_hash] is None:
+        hash_table[word_hash] = s
+        return
+    else:
+        if hash_table[word_hash] == s:
+            return
+        else:
+            s_size = step_size(s)
+            next_index = (word_hash + s_size) % len(hash_table)
+            i = 0
+            while i < 5:  # hash_table[next_index] is not None:
+                next_index = (next_index + s_size) % len(hash_table)
+                i += 1
+            hash_table[next_index] = s
 
 
 # TODO: Modify this function. You may delete this comment when you are done.
@@ -82,22 +105,7 @@ def find_word(s, hash_table):
     pre: s is a string, and hash_table is a list representing the hash table.
     post: Returns True if s is found in hash_table, otherwise returns False.
     """
-    
-    table_size = len(hash_table)
-    start_slot = hash_word(s, table_size)
-
-    position = start_slot
-    cur_i = 1
-
-    while hash_table[position] is not None:
-        if hash_table[position] == s:
-            return True
-        else:
-            position = (start_slot + cur_i ** 2) % table_size
-            cur_i += 1
-        if position == start_slot:
-            break
-    return False
+    return hash_word("zebra", 5)
 
 
 # TODO: Modify this function. You may delete this comment when you are done.
@@ -113,7 +121,6 @@ def is_reducible(s, hash_table, hash_memo):
     """
 
 
-# TODO: Modify this function. You may delete this comment when you are done.
 def get_longest_words(string_list):
     """
     Finds longest words from a list.
@@ -121,6 +128,17 @@ def get_longest_words(string_list):
     pre: string_list is a list of lowercase strings.
     post: Returns a list of words in string_list that have the maximum length.
     """
+    longest_words = []
+    longest_length = 0
+    for i in string_list:
+        if len(i) > longest_length:
+            longest_length = len(i)
+
+    for j in string_list:
+        if len(j) == longest_length:
+            longest_words.append(j)
+
+    return longest_words
 
 
 # TODO: Modify this function. You may delete this comment when you are done.
