@@ -105,7 +105,22 @@ def find_word(s, hash_table):
     pre: s is a string, and hash_table is a list representing the hash table.
     post: Returns True if s is found in hash_table, otherwise returns False.
     """
-    return hash_word("zebra", 5)
+    
+    table_size = len(hash_table)
+    start_slot = hash_word(s, table_size)
+
+    position = start_slot
+    cur_i = 1
+
+    while hash_table[position] is not None:
+        if hash_table[position] == s:
+            return True
+        else:
+            position = (start_slot + cur_i ** 2) % table_size
+            cur_i += 1
+        if position == start_slot:
+            break
+    return False
 
 
 # TODO: Modify this function. You may delete this comment when you are done.
@@ -119,6 +134,12 @@ def is_reducible(s, hash_table, hash_memo):
     post: Returns True if s is reducible (also updates hash_memo by
           inserting s if reducible), otherwise returns False.
     """
+    if s in hash_memo:
+        return hash_memo[s]
+    for i in range(len(s)):
+        reduced_s = s[:i] + s[i + 1:]
+        hash_memo[s] = is_reducible(reduced_s, hash_table, hash_memo)
+    return False
 
 
 def get_longest_words(string_list):
