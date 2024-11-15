@@ -67,7 +67,6 @@ def step_size(s):
     return STEP_SIZE_CONSTANT - (hash_word(s, STEP_SIZE_CONSTANT) % STEP_SIZE_CONSTANT)
 
 
-# TODO: Modify this function. You may delete this comment when you are done.
 def insert_word(s, hash_table):
     """
     Inserts a string into the hash table using double hashing for collision resolution.
@@ -77,11 +76,10 @@ def insert_word(s, hash_table):
     post: Inserts s into hash_table at the correct index; resolves any collisions
           by double hashing.
     """
-    word_hash = hash_word(s, len(hash_table) - 1)
+    word_hash = hash_word(s, len(hash_table))
 
-    if hash_table[word_hash] is None:
+    if hash_table[word_hash] == "":
         hash_table[word_hash] = s
-        return
     else:
         if hash_table[word_hash] == s:
             return
@@ -89,13 +87,12 @@ def insert_word(s, hash_table):
             s_size = step_size(s)
             next_index = (word_hash + s_size) % len(hash_table)
             i = 0
-            while i < 5:  # hash_table[next_index] is not None:
+            while hash_table[next_index] != "":
                 next_index = (next_index + s_size) % len(hash_table)
                 i += 1
             hash_table[next_index] = s
 
 
-# TODO: Modify this function. You may delete this comment when you are done.
 def find_word(s, hash_table):
     """
     Searches for a string in the hash table.
@@ -105,25 +102,9 @@ def find_word(s, hash_table):
     pre: s is a string, and hash_table is a list representing the hash table.
     post: Returns True if s is found in hash_table, otherwise returns False.
     """
-    
-    table_size = len(hash_table)
-    start_slot = hash_word(s, table_size)
-
-    position = start_slot
-    cur_i = 1
-
-    while hash_table[position] is not None:
-        if hash_table[position] == s:
-            return True
-        else:
-            position = (start_slot + cur_i ** 2) % table_size
-            cur_i += 1
-        if position == start_slot:
-            break
-    return False
+    return hash_word("zebra", 5)
 
 
-# TODO: Modify this function. You may delete this comment when you are done.
 def is_reducible(s, hash_table, hash_memo):
     """
     Determines if a string is reducible using a recursive check.
@@ -134,10 +115,13 @@ def is_reducible(s, hash_table, hash_memo):
     post: Returns True if s is reducible (also updates hash_memo by
           inserting s if reducible), otherwise returns False.
     """
-    if s in hash_memo:
-        return hash_memo[s]
+    if len(s) == 1:
+        if s in ["a", "i", "o"]:
+            return True
+        else:
+            return False
     for i in range(len(s)):
-        reduced_s = s[:i] + s[i + 1:]
+        reduced_s = s[:i] + s[i + 1 :]
         hash_memo[s] = is_reducible(reduced_s, hash_table, hash_memo)
     return False
 
@@ -162,33 +146,48 @@ def get_longest_words(string_list):
     return longest_words
 
 
-# TODO: Modify this function. You may delete this comment when you are done.
 def main():
     """The main function that calculates the longest reducible words"""
     # create an empty word_list
+    word_list = []
 
     # read words using input redirection
     # where each line read from input()
     # should be a single word. Append to word_list
     # ensure each word has no trailing white space.
+    n = input()
+    for i in range(n):
+        call = input
+        call = call.split()
+        word_list.append(call)
 
     # find length of word_list
+    list_len = len(word_list)
 
     # determine prime number N that is greater than twice
     # the length of the word_list
+    N = list_len * 2
+    while not is_prime(N):
+        N += 1
 
-    # create an empty hash_list
+        # create an empty hash_list
+        hash_list = []
 
-    # populate the hash_list with N blank strings
+        # populate the hash_list with N blank strings
+        for i in hash_list:
+            hash_list[i] = ""
 
-    # hash each word in word_list into hash_list
-    # for collisions use double hashing
+        # hash each word in word_list into hash_list
+        # for collisions use double hashing
+        for word in word_list:
+            insert_word(word, hash_list)
 
-    # create an empty hash_memo of size M
-    # we do not know a priori how many words will be reducible
-    # let us assume it is 10 percent (fairly safe) of the words
-    # then M is a prime number that is slightly greater than
-    # 0.2 * size of word_list
+        # create an empty hash_memo of size M
+        # we do not know a priori how many words will be reducible
+        # let us assume it is 10 percent (fairly safe) of the words
+        # then M is a prime number that is slightly greater than
+        # 0.2 * size of word_list
+        hash_memo = []
 
     # populate the hash_memo with M blank strings
 
