@@ -76,22 +76,24 @@ def insert_word(s, hash_table):
     post: Inserts s into hash_table at the correct index; resolves any collisions
           by double hashing.
     """
-    word_hash = hash_word(s, len(hash_table))
-
+    table_size = len(hash_table)
+    word_hash = hash_word(s, table_size)
+    s_size = step_size(s)
+    # inital case
     if hash_table[word_hash] == "":
         hash_table[word_hash] = s
-    else:
-        if hash_table[word_hash] == s:
+        return
+    elif hash_table[word_hash] == s:
+        return
+    # traversing until
+    index = word_hash
+    while hash_table[index] != "":
+        index = (index + s_size) % table_size
+        if hash_table[index] == "":
+            hash_table[index] = s
             return
-        else:
-            s_size = step_size(s)
-            next_index = (word_hash + s_size) % len(hash_table)
-            i = 0
-            while hash_table[next_index] != "":
-                next_index = (next_index + s_size) % len(hash_table)
-                i += 1
-            hash_table[next_index] = s
-
+        elif hash_table[index] == s:
+            return        
 
 def find_word(s, hash_table):
     """
@@ -107,14 +109,15 @@ def find_word(s, hash_table):
     start_slot = hash_word(s, table_size)
 
     position = start_slot
-    cur_i = 1
+    
 
     while hash_table[position] is not None:
         if hash_table[position] == s:
             return True
-        else:
-            position = (start_slot + cur_i ** 2) % table_size
-            cur_i += 1
+        
+        step = step_size(s)
+        position = (position + step) % table_size
+            
         if position == start_slot:
             break
     return False
@@ -133,11 +136,8 @@ def is_reducible(s, hash_table, hash_memo):
     if len(s) == 1:
         if s in ["a", "i", "o"]:
             return True
-        else:
-            return False
-    for i in range(len(s)):
-        reduced_s = s[:i] + s[i + 1 :]
-        hash_memo[s] = is_reducible(reduced_s, hash_table, hash_memo)
+    if find_word(s, hash_memo):
+        return True
     return False
 
 
@@ -219,7 +219,7 @@ def main():
 
     # print the reducible words in alphabetical order
     # one word per line
-
+    pass
 
 if __name__ == "__main__":
     main()
