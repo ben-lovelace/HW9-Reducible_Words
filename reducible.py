@@ -93,9 +93,8 @@ def insert_word(s, hash_table):
             hash_table[index] = s
             return
         elif hash_table[index] == s:
-            return    
-    
-        
+            return
+
 
 def find_word(s, hash_table):
     """
@@ -111,12 +110,12 @@ def find_word(s, hash_table):
     start_slot = hash_word(s, table_size)
 
     position = start_slot
-    
+
     while hash_table[position] != "":
         if hash_table[position] == s:
-            return True    
+            return True
         step = step_size(s)
-        position = (position + step) % table_size          
+        position = (position + step) % table_size
         if position == start_slot:
             break
     return False
@@ -138,14 +137,12 @@ def is_reducible(s, hash_table, hash_memo):
     if find_word(s, hash_memo):
         return True
     for i in range(len(s)):
-        reduce_s = s[:i] + s[i + 1:]
+        reduce_s = s[:i] + s[i + 1 :]
         if find_word(reduce_s, hash_table):
             if is_reducible(reduce_s, hash_table, hash_memo):
                 insert_word(s, hash_memo)
                 return True
     return False
-
-
 
 
 def get_longest_words(string_list):
@@ -178,7 +175,7 @@ def main():
     # should be a single word. Append to word_list
     # ensure each word has no trailing white space.
     for _ in range(113811):
-        call = input
+        call = input()
         call = str(call)
         word_list.append(call)
 
@@ -195,7 +192,7 @@ def main():
     hash_list = []
 
     # populate the hash_list with N blank strings
-    for i in range(N):
+    for _ in range(N):
         hash_list.append("")
 
     # hash each word in word_list into hash_list
@@ -231,13 +228,14 @@ def main():
             reducible_words.append(word)
 
     # find the largest reducible words in reducible_words
-    largest_words = get_longest_words(word_list)
+    largest_words = get_longest_words(reducible_words)
 
     # print the reducible words in alphabetical order
     # one word per line
     largest_words.sort()
     for word in largest_words:
         print(word)
+
 
 if __name__ == "__main__":
     main()
