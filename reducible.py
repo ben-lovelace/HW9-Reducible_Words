@@ -93,7 +93,9 @@ def insert_word(s, hash_table):
             hash_table[index] = s
             return
         elif hash_table[index] == s:
-            return        
+            return    
+    
+        
 
 def find_word(s, hash_table):
     """
@@ -104,20 +106,17 @@ def find_word(s, hash_table):
     pre: s is a string, and hash_table is a list representing the hash table.
     post: Returns True if s is found in hash_table, otherwise returns False.
     """
-    
+
     table_size = len(hash_table)
     start_slot = hash_word(s, table_size)
 
     position = start_slot
     
-
-    while hash_table[position] is not None:
+    while hash_table[position] != "":
         if hash_table[position] == s:
-            return True
-        
+            return True    
         step = step_size(s)
-        position = (position + step) % table_size
-            
+        position = (position + step) % table_size          
         if position == start_slot:
             break
     return False
@@ -144,7 +143,10 @@ def is_reducible(s, hash_table, hash_memo):
             if is_reducible(reduce_s, hash_table, hash_memo):
                 insert_word(s, hash_memo)
                 return True
-        return False
+    return False
+
+
+
 
 def get_longest_words(string_list):
     """
