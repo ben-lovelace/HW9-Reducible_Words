@@ -177,8 +177,7 @@ def main():
     # where each line read from input()
     # should be a single word. Append to word_list
     # ensure each word has no trailing white space.
-    n = input()
-    for i in range(113811):
+    for _ in range(113811):
         call = input
         call = str(call)
         word_list.append(call)
@@ -210,7 +209,7 @@ def main():
     # then M is a prime number that is slightly greater than
     # 0.2 * size of word_list
     hash_memo = []
-    M = len(word_list)
+    M = int(0.2 * len(word_list))
     while not is_prime(M):
         M += 1
 
@@ -230,12 +229,14 @@ def main():
     for word in word_list:
         if is_reducible(word, hash_list, hash_memo):
             reducible_words.append(word)
+
     # find the largest reducible words in reducible_words
     largest_words = get_longest_words(word_list)
 
     # print the reducible words in alphabetical order
     # one word per line
     print(largest_words.sort())
+
 
 if __name__ == "__main__":
     main()
