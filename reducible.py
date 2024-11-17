@@ -235,8 +235,9 @@ def main():
 
     # print the reducible words in alphabetical order
     # one word per line
-    print(largest_words.sort())
-
+    largest_words.sort()
+    for word in largest_words:
+        print(word)
 
 if __name__ == "__main__":
     main()
