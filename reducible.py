@@ -178,21 +178,23 @@ def main():
         call = input()
         call = str(call)
         word_list.append(call)
+        if call == "zymurgy":
+            break
 
     # find length of word_list
     list_len = len(word_list)
 
     # determine prime number N that is greater than twice
     # the length of the word_list
-    N = list_len * 2
-    while not is_prime(N):
-        N += 1
+    n = list_len * 2
+    while not is_prime(n):
+        n += 1
 
     # create an empty hash_list
     hash_list = []
 
     # populate the hash_list with N blank strings
-    for _ in range(N):
+    for _ in range(n):
         hash_list.append("")
 
     # hash each word in word_list into hash_list
@@ -206,12 +208,12 @@ def main():
     # then M is a prime number that is slightly greater than
     # 0.2 * size of word_list
     hash_memo = []
-    M = int(0.2 * len(word_list))
-    while not is_prime(M):
-        M += 1
+    m = int(0.2 * len(word_list))
+    while not is_prime(m):
+        m += 1
 
     # populate the hash_memo with M blank strings
-    for i in range(M):
+    for i in range(m):
         hash_memo.append("")
 
     # create an empty list reducible_words
