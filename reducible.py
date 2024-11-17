@@ -15,8 +15,6 @@ UT EID 1: BRL979
 UT EID 2: ANA3636
 """
 
-import sys
-
 # the constant used to calculate the step size
 STEP_SIZE_CONSTANT = 3
 
@@ -83,7 +81,7 @@ def insert_word(s, hash_table):
     if hash_table[word_hash] == "":
         hash_table[word_hash] = s
         return
-    elif hash_table[word_hash] == s:
+    if hash_table[word_hash] == s:
         return
     # traversing until
     index = word_hash
@@ -92,7 +90,7 @@ def insert_word(s, hash_table):
         if hash_table[index] == "":
             hash_table[index] = s
             return
-        elif hash_table[index] == s:
+        if hash_table[index] == s:
             return
 
 
@@ -155,8 +153,7 @@ def get_longest_words(string_list):
     longest_words = []
     longest_length = 0
     for i in string_list:
-        if len(i) > longest_length:
-            longest_length = len(i)
+        longest_length = max(longest_length, len(i))
 
     for j in string_list:
         if len(j) == longest_length:
@@ -213,7 +210,7 @@ def main():
         m += 1
 
     # populate the hash_memo with M blank strings
-    for i in range(m):
+    for _ in range(m):
         hash_memo.append("")
 
     # create an empty list reducible_words
