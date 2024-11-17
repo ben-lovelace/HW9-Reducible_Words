@@ -138,8 +138,13 @@ def is_reducible(s, hash_table, hash_memo):
             return True
     if find_word(s, hash_memo):
         return True
-    return False
-
+    for i in range(len(s)):
+        reduce_s = s[:i] + s[i + 1:]
+        if find_word(reduce_s, hash_table):
+            if is_reducible(reduce_s, hash_table, hash_memo):
+                insert_word(s, hash_memo)
+                return True
+        return False
 
 def get_longest_words(string_list):
     """
